@@ -11,7 +11,6 @@ class DataBase {
             database: 'tasks_db'
         });
     }
-
     consulta( query ) {
         return new Promise( ( resolve, reject ) => {
             this.pool.getConnection( (err, connection ) => {
@@ -73,5 +72,10 @@ export class UserDB extends DataBase {
         } catch (err) {
             return null;
         }
+    }
+}
+export class TaskDB extends DataBase {
+    constructor() {
+        super()
     }
 }

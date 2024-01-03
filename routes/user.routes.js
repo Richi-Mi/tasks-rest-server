@@ -56,9 +56,6 @@ async (req, res = response ) => {
             message: `Error, please check your username`
         })
     }
-        
-    
-    
 });
 
 export default router;

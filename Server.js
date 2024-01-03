@@ -1,6 +1,7 @@
 import express from 'express';
 
 import user_routes from './routes/user.routes.js';
+import task_routes from './routes/tasks.routes.js';
 
 class Server {
     constructor() {
@@ -21,6 +22,7 @@ class Server {
 
     routes() {
         this.app.use( this.rutas.user, user_routes );
+        this.app.use( this.rutas.tasks, task_routes );
     }
 
     listen() {
