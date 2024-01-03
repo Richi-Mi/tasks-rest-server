@@ -1,5 +1,5 @@
 import mysql from 'mysql';
-import { encriptar } from '../encript.js';
+import { comparar, encriptar } from '../encript.js';
 
 class DataBase {
     constructor() {
@@ -36,11 +36,42 @@ export class UserDB extends DataBase {
     }
 
     async create_user( username, password ) {
-        let insert_query = `insert into ${ this.collection } (username, password) values('${ username }', '${ encriptar(password) }')`;
+        try {
+            let insert_query = `insert into ${ this.collection } (username, password) values('${ username }', '${ encriptar(password) }')`;
 
-        const res = await this.consulta( insert_query);
+            const { affectedRows } = await this.consulta( insert_query);
 
-        console.log( res );
+            if( affectedRows > 0 )
+                return true;
+            else 
+                return false;
+            
+        } catch (err) {
+            return false;
+        }
     }
 
+    async login( username, password ) {
+        try {
+            const log_query = `select password from ${ this.collection } where username = '${username}'`;
+            const [ { password: password_encripted } ] = await this.consulta( log_query );
+
+            const isLog = comparar( password, password_encripted );
+        
+            return isLog;
+        } catch (err) {
+            return false;
+        }
+     
+    }
+    async get_info( username ) {
+        try {
+            const select_query = `select * from ${this.collection} where username = '${username}'`;
+        
+            const res = await this.consulta( select_query );
+            return res;
+        } catch (err) {
+            return null;
+        }
+    }
 }

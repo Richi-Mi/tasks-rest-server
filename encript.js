@@ -6,5 +6,7 @@ export const encriptar = ( texto ) => {
     return bcryptjs.hashSync( texto, salt );
 }
 export const comparar = ( text, encripted_text ) => {
-    
+    const compare = bcryptjs.compare( text, encripted_text );
+
+    return compare;
 }
