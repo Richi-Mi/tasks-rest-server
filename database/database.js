@@ -78,4 +78,51 @@ export class TaskDB extends DataBase {
     constructor() {
         super()
     }
+    async add_task({ content, finished }, clave ) {
+        try {
+            const insert_query = `insert into tasks (content, finished, fk_username) values ('${content}', ${ finished }, '${clave}');`
+            const { affectedRows } = await this.consulta( insert_query )
+
+            return (affectedRows > 0) ? true : false
+            
+        } catch ( err ) {
+            console.log(err);
+            return false;
+        }
+    }
+    async complete_task( id ) {
+        try {
+            const update_query = `update tasks set finished=1 where id=${id};`
+            const { affectedRows } = await this.consulta( update_query )
+
+            return (affectedRows > 0) ? true : false
+        } catch (err) {
+            return false
+        }
+    }
+
+    async get_taks( username, category = "" ) {
+
+        try {
+            let get_query = ''
+            switch( category ) {
+                case "0": 
+                    get_query = `select content, id from tasks where fk_username = "${ username }" AND finished=0;`;  
+                break;
+
+                case "1": 
+                    get_query = `select content, id from tasks where fk_username = "${ username }" AND finished=1;`;  
+                break;
+
+                default:
+                    get_query = `select content, id from tasks where fk_username = "${ username }";`;  
+                break;
+            }
+            const result = await this.consulta( get_query )
+            return result
+
+        } catch (err) {
+            
+        }
+    }
 }

@@ -12,16 +12,7 @@ router.post('/create', async (req, res) => {
 
     const result = await user_db.create_user( username, password );
 
-    if( result ) {
-        res.status(201).json({
-            message: 'Your account has been registred, so please log in the next form'
-        });
-    }
-    else {
-        res.status(400).json({
-            message: `The user ${ username } has an account`
-        })
-    }
+    result ? res.status(201).send('Your account has been registred, so please log in the next form') : res.status(400).send(`The user ${ username } has an account`)
 });
 
 // Route terminated
@@ -40,22 +31,15 @@ router.post('/login', async (req, res) => {
 });
 
 // Route terminated 
-router.get('/info/:id', [
-    validar_token
-],
-async (req, res = response ) => {
+router.get('/info/:id', validar_token, async (req, res = response ) => {
     const { id } = req.params;
     const info = await user_db.get_info( id );
 
-    if( !(info == null) ) {
-        const [ data ] = info
-        res.status(200).json( data );
-    }
-    else {
-        res.status(400).json({
+    !(info == null) ? 
+        res.status(200).json( info[0] ) 
+        : res.status(400).json({
             message: `Error, please check your username`
-        })
-    }
+        });
 });
 
 export default router;

@@ -2,6 +2,7 @@ import express from 'express';
 
 import user_routes from './routes/user.routes.js';
 import task_routes from './routes/tasks.routes.js';
+import cors from 'cors';
 
 class Server {
     constructor() {
@@ -18,6 +19,8 @@ class Server {
     middlewares() {
         // Parseo del Body a formato JSON.
         this.app.use( express.json() );
+        // USO DE CORS 
+        this.app.use( cors() )
     }
 
     routes() {
