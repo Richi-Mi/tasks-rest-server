@@ -12,7 +12,11 @@ router.post('/create', async (req, res) => {
 
     const result = await user_db.create_user( username, password );
 
-    result ? res.status(201).send('Your account has been registred, so please log in the next form') : res.status(400).send(`The user ${ username } has an account`)
+    result ? res.status(201).json({
+        message: 'Your account has been registred, so please log in the next form'
+    }) : res.status(400).json({
+        message: `The user ${ username } has an account`
+    })
 });
 
 // Route terminated

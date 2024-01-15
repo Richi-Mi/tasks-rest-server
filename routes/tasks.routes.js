@@ -11,14 +11,22 @@ router.post("/add", validar_token, async (req = request, res = response ) => {
 
     const created = await tasks_db.add_task( task, clave);
 
-    created ? res.status( 201 ).send("Note saved") : res.status(500).send("Internal Server Error")
+    created ? res.status( 201 ).json({
+        message: "Note saved"
+    }) : res.status(500).json({
+        message: "Internal Server Error"
+    })
 });
 
 router.put("/complete/:id", validar_token, async ( req, res ) => {
     const { id } = req.params
     const updated = await tasks_db.complete_task( id )
 
-    updated ? res.status( 201 ).send("Note updated") : res.status(500).send("Internal Server Error")
+    updated ? res.status( 201 ).json({
+        message: "Note updated"
+    }) : res.status(500).json({
+        message: "Internal Server Error"
+    })
 });
 
 router.get("/get_tasks/:category", validar_token, async (req, res) => {
